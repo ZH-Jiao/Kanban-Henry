@@ -1,5 +1,5 @@
 <template>
-<div class="container mt-5">
+<div class="b-container mt-5 mx-5">
     <div class="row">
       <div class="col form-inline">
         <b-form-input
@@ -23,8 +23,8 @@
     
 
 
-    <div class="row mt-5">
-      <div class="col-3">
+    <div class="row mt-4">
+      <div class="col-4">
         <div class="p-2 alert alert-secondary">
           <h3>{{boardName[0]}}</h3>
           <!-- Backlog draggable component. Pass arrBackLog to list prop -->
@@ -39,13 +39,43 @@
               :key="element.name"
             >
               <!-- {{ element.name }} -->
+              <!-- Basic Info -->
               <div v-html="element.renderCard()"></div>
+
+              <!-- Collaps Detail -->
+              <b-button v-b-toggle.collapse-1 variant="primary">Expand Detail</b-button>
+              <b-collapse id="collapse-1" class="mt-2">
+                <b-card>
+                  <!-- Rate -->
+                  <FormulateForm class="row" v-model="tempRate" @submit="card.submitRate(tempRate)">
+                  <FormulateInput class="col" name="rate" placeholder="Enter your rate" validation="required" />
+                  <FormulateInput class="col" type="submit" name="rate" label="Rate" validation="required" />
+                  </FormulateForm>
+                </b-card>
+                <b-card>
+                  <p>Comment</p>
+                  <b-list-group>
+                    <b-list-group-item class="d-flex align-items-center" v-for="comment in element.comments" v-bind:key="comment.author">
+                      <b-avatar class="mr-3"></b-avatar>
+                      <span class="mr-auto">{{comment.author}}</span>
+                      <span class="mr-auto">{{comment.content}}</span>
+                    </b-list-group-item>
+                  </b-list-group>
+                   <!-- Add Comment -->
+                  <FormulateForm class="row" v-model="tempRate" @submit="card.submitRate(tempRate)">
+                    <FormulateInput class="col-2" name="rate" placeholder="Reviewer" validation="required" />
+                    <FormulateInput class="col" name="rate" placeholder="Enter your comment" validation="required" />
+                    <FormulateInput class="col" type="submit" name="rate" label="Comment" validation="required" />
+                  </FormulateForm>
+                </b-card>
+              </b-collapse>
+
             </div>
           </draggable>
         </div>
       </div>
 
-      <div class="col-3">
+      <div class="col-4">
         <div class="p-2 alert alert-primary">
           <h3>{{boardName[1]}}</h3>
           <!-- In Progress draggable component. Pass arrInProgress to list prop -->
@@ -65,7 +95,7 @@
         </div>
       </div>
 
-      <div class="col-3">
+      <div class="col-4">
         <div class="p-2 alert alert-warning">
           <h3>{{boardName[2]}}</h3>
           <!-- Testing draggable component. Pass arrTested to list prop -->
@@ -85,7 +115,7 @@
         </div>
       </div>
 
-      <div class="col-3">
+      <div class="col-4">
         <div class="p-2 alert alert-success">
           <h3>{{boardName[3]}}</h3>
           <!-- Done draggable component. Pass arrDone to list prop -->
@@ -105,7 +135,7 @@
         </div>
       </div>
 
-       <div class="col-3">
+       <div class="col-4">
         <div class="p-2 alert alert-success">
           <h3>{{boardName[4]}}</h3>
           <!-- Done draggable component. Pass arrDone to list prop -->
@@ -125,7 +155,7 @@
         </div>
       </div>
 
-       <div class="col-3">
+       <div class="col-4">
         <div class="p-2 alert alert-success">
           <h3>{{boardName[5]}}</h3>
           <!-- Done draggable component. Pass arrDone to list prop -->
@@ -155,7 +185,8 @@ import draggable from "vuedraggable"
 export default {
   name: 'Kanban',
   components: {
-    draggable
+    draggable,
+
   },
   data() {
     return {
@@ -176,7 +207,8 @@ export default {
           'Offered': [],
           'Accepted': [],
           'Rejected': []
-      }
+      },
+      tempRate: 0
     }
   },
   methods: {
@@ -195,11 +227,14 @@ export default {
       );
       this.listBoard['Applied'].push(card);
       console.log(this.listBoard['Applied'])
+    },
+    navToDetail(contact) {
+      this.$router.push("/detail/" + contact);
     }
   }
 }
 
-class Card {
+export class Card {
   constructor(name, education, contact) {
     this.name = name;
     this.education = education;
@@ -207,14 +242,21 @@ class Card {
     this.status = "Applied";
     this.rate = 0;
     this.rateNumber = 0;
+    this.curRate = 0;
+    this.comments = [
+      {author: 'Manager', content: "He is so bad"},
+      {author: 'HR', content: "He is so bad"},
+      {author: 'Head HR', content: "He is so bad"},
+      {author: 'CTO', content: "He is so bad"},
+    ]
   }
 
   renderCard() {
     return (
       "<h5>" + this.name + "</h5>" +
-      "<p>" + this.contact + "</br>" +
-      this.education + "</br>" +
-      "Rate: " + this.rate + "</p>" 
+      "<span>" + this.education + "    |    " + "</span>" +
+      "<span>" + this.contact + "    |    " + "</span>" +
+      "<span>Avg. Rating: " + this.rate + "</span>" 
     )
   }
 

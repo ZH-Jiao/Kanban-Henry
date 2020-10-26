@@ -1,17 +1,22 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <Kanban/>
+    <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
+    <h1>Kanban</h1>
+    <router-link class="btn-primary h3" to="/">Go To Kanban</router-link>
+    <!-- <router-link to="/detail">detail</router-link> -->
+    <router-view />
+    
+    <!-- <Kanban/> -->
   </div>
 </template>
 
 <script>
-import Kanban from './components/Kanban.vue'
+// import Kanban from './components/Kanban.vue'
 
 export default {
   name: 'App',
   components: {
-    Kanban
+    
   }
 }
 </script>

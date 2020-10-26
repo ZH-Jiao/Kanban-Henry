@@ -5,6 +5,13 @@
 npm install
 ```
 
+## Libraries
+Framework: Vue 2
+Style: Bootstrap-vue
+Form: vue formulate
+Drag-drop: vuedraggable
+API call: axios
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve
