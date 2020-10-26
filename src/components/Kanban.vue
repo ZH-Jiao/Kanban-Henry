@@ -55,7 +55,7 @@
 
       <div class="col-3">
         <div class="p-2 alert alert-warning">
-          <h3>boardName[2]</h3>
+          <h3>{{boardName[2]}}</h3>
           <!-- Testing draggable component. Pass arrTested to list prop -->
           <draggable
             class="list-group kanban-column"
@@ -79,12 +79,12 @@
           <!-- Done draggable component. Pass arrDone to list prop -->
           <draggable
             class="list-group kanban-column"
-            :list="listBoard[boardName[0]]"
+            :list="listBoard[boardName[3]]"
             group="tasks"
           >
             <div
               class="list-group-item"
-              v-for="element in listBoard[boardName[0]]"
+              v-for="element in listBoard[boardName[3]]"
               :key="element.name"
             >
               {{ element.name }}
@@ -157,7 +157,7 @@ export default {
         'Rejected'
       ],
       listBoard: {
-          'Applied': [],
+          'Applied': [{name: 'Henry'}],
           'PhoneScreen': [],
           'OnSite': [],
           'Offered': [],
@@ -166,16 +166,26 @@ export default {
       }
     }
   },
-  method() {
-    add: () => {
+  methods: {
+    add: function() {
       if (this.newApplicant) {
-        this.listBoard[boardName[0]];
-        this.newApplicant = ""
+        this.listBoard['Applied'].push({name: this.newApplicant});
+        this.newApplicant = "";
       }
     }
   }
 }
-  
+
+class Card {
+  constructor(name) {
+    constructor(name, "", "");
+  }
+  constructor(name, education, contact) {
+    this.name = name;
+    this.education = education;
+    this.contact = contact;
+  }
+}
 
 </script>
 
