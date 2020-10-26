@@ -12,6 +12,17 @@
         <b-button @click="add" variant="primary" class="ml-3">Add</b-button>
       </div>
     </div>
+
+    
+      <FormulateForm v-model="formValues" @submit="handleSubmit">
+        <FormulateInput name="name" label="Name" validation="required" />
+        <FormulateInput name="education" label="Education" validation="required" />
+        <FormulateInput name="contact" label="Contact" validation="required|number" />
+        <FormulateInput type="submit" label="Add Applicant"/>
+      </FormulateForm>
+    
+
+
     <div class="row mt-5">
       <div class="col-3">
         <div class="p-2 alert alert-secondary">
@@ -27,7 +38,8 @@
               v-for="element in listBoard[boardName[0]]"
               :key="element.name"
             >
-              {{ element.name }}
+              <!-- {{ element.name }} -->
+              <div v-html="element.renderCard()"></div>
             </div>
           </draggable>
         </div>
@@ -47,7 +59,7 @@
               v-for="element in listBoard[boardName[1]]"
               :key="element.name"
             >
-              {{ element.name }}
+              <div v-html="element.renderCard()"></div>
             </div>
           </draggable>
         </div>
@@ -67,7 +79,7 @@
               v-for="element in listBoard[boardName[2]]"
               :key="element.name"
             >
-              {{ element.name }}
+              <div v-html="element.renderCard()"></div>
             </div>
           </draggable>
         </div>
@@ -87,7 +99,7 @@
               v-for="element in listBoard[boardName[3]]"
               :key="element.name"
             >
-              {{ element.name }}
+              <div v-html="element.renderCard()"></div>
             </div>
           </draggable>
         </div>
@@ -107,7 +119,7 @@
               v-for="element in listBoard[boardName[4]]"
               :key="element.name"
             >
-              {{ element.name }}
+              <div v-html="element.renderCard()"></div>
             </div>
           </draggable>
         </div>
@@ -127,7 +139,7 @@
               v-for="element in listBoard[boardName[5]]"
               :key="element.name"
             >
-              {{ element.name }}
+              <div v-html="element.renderCard()"></div>
             </div>
           </draggable>
         </div>
@@ -147,6 +159,7 @@ export default {
   },
   data() {
     return {
+      formValues: {},
       newApplicant: "",
       boardName: [
         'Applied',
@@ -157,7 +170,7 @@ export default {
         'Rejected'
       ],
       listBoard: {
-          'Applied': [{name: 'Henry'}],
+          'Applied': [],
           'PhoneScreen': [],
           'OnSite': [],
           'Offered': [],
@@ -172,19 +185,39 @@ export default {
         this.listBoard['Applied'].push({name: this.newApplicant});
         this.newApplicant = "";
       }
+    },
+    handleSubmit() {
+      console.log(this.formValues);
+      var card = new Card(
+        this.formValues['name'],
+        this.formValues['education'],
+        this.formValues['contact']
+      );
+      this.listBoard['Applied'].push(card);
+      console.log(this.listBoard['Applied'])
     }
   }
 }
 
 class Card {
-  constructor(name) {
-    constructor(name, "", "");
-  }
   constructor(name, education, contact) {
     this.name = name;
     this.education = education;
     this.contact = contact;
+    this.status = "Applied";
+    this.rate = 0;
+    this.rateNumber = 0;
   }
+
+  renderCard() {
+    return (
+      "<h5>" + this.name + "</h5>" +
+      "<p>" + this.contact + "</br>" +
+      this.education + "</br>" +
+      "Rate: " + this.rate + "</p>" 
+    )
+  }
+
 }
 
 </script>

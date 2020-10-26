@@ -8,11 +8,12 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import './assets/formulate.css'
 import VueFormulate from '@braid/vue-formulate'
 
-Vue.config.productionTip = false
 
-Vue.use(VueFormulate)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+Vue.use(VueFormulate)
+
+Vue.config.productionTip = false
 
 new Vue({
     render: h => h(App),
