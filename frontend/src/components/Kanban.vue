@@ -1,17 +1,5 @@
 <template>
 <div class="b-container mt-5 mx-5">
-    <div class="row">
-      <div class="col form-inline">
-        <b-form-input
-          id="input-2"
-          v-model="newApplicant"
-          required
-          placeholder="Enter new applicant's name"
-          @keyup.enter="add"
-        ></b-form-input>
-        <b-button @click="add" variant="primary" class="ml-3">Add</b-button>
-      </div>
-    </div>
 
     
       <FormulateForm v-model="formValues" @submit="handleSubmit">
@@ -47,7 +35,7 @@
               <b-collapse id="collapse-1" class="mt-2">
                 <b-card>
                   <!-- Rate -->
-                  <FormulateForm class="row" v-model="tempRate" @submit="card.submitRate(tempRate)">
+                  <FormulateForm class="row" v-model="tempRate" @submit="submitRate(element.contact)">
                   <FormulateInput class="col" name="rate" placeholder="Enter your rate" validation="required" />
                   <FormulateInput class="col" type="submit" name="rate" label="Rate" validation="required" />
                   </FormulateForm>
@@ -214,13 +202,12 @@ export default {
       tempRate: 0
     }
   },
+  mounted: function() {
+    console.log(this.listBoard)
+    this.getAllApplicants();
+    console.log(this.listBoard)
+  },
   methods: {
-    add: function() {
-      if (this.newApplicant) {
-        this.listBoard['Applied'].push({name: this.newApplicant});
-        this.newApplicant = "";
-      }
-    },
     handleSubmit() {
       console.log(this.formValues);
       var card = new Card(
@@ -230,26 +217,7 @@ export default {
       );
       this.listBoard['Applied'].push(card);
       console.log(this.listBoard['Applied']);
-    //   const requestOptions = {
-		// 	method: 'POST',
-		// 	headers: { 
-		// 		'Accept': 'application/json',
-		// 		'Content-Type': 'application/json' 
-		// 	},
-		// 	body: JSON.stringify({
-		// 		'name': card.name,
-    //     'education': card.education,
-    //     'contact': card.contact,
-    //     'status': 'Applied',
-    //     'rate': 0,
-    //     'rate_number': 0
-		// 	})
-		// };
-    // fetch(BASE_URL + "add-applicant", requestOptions);
-    
-    // axios.get(BASE_URL + "get-all-applicants").then(response => {
-    //   console.log(response);
-    // })
+
       axios({
         url: BASE_URL + "add-applicant",
         method: 'post',
@@ -265,13 +233,53 @@ export default {
           rate_number: 0
         }
       });
-
-        
+      this.getAllApplicants();
     },
-    navToDetail(contact) {
-      this.$router.push("/detail/" + contact);
+
+    submitRate(contact) {
+      axios({
+        url: BASE_URL + "add-rate",
+        method: 'post',
+        headers: { 
+          'Accept': 'application/json',
+          'Content-Type': 'application/json' },
+        data: {
+          contact: contact,
+          newRate: this.tempRate
+        }
+      });
+    },
+
+    getAllApplicants() {
+      // this.refreshList();
+      var entry = null;
+      axios({
+        url: BASE_URL + "get-all-applicants",
+        method: 'get',
+        headers: { 
+          'Accept': 'application/json',
+          'Content-Type': 'application/json' },
+      })
+      .then(response => {
+        for (entry of response.data) {
+          var card = new Card(entry.name, entry.education, entry.contact);
+          card.rate = entry.rate;
+          this.listBoard[entry.status].push(card)
+        }
+      })
+    },
+
+    refreshList() {
+      var n = null;
+      for (n of this.boardName) {
+        this.listBoard[n] = []
+      }
     }
-  }
+
+
+
+  },
+
 }
 
 export class Card {
@@ -281,8 +289,6 @@ export class Card {
     this.contact = contact;
     this.status = "Applied";
     this.rate = 0;
-    this.rateNumber = 0;
-    this.curRate = 0;
     this.comments = [
       {author: 'Manager', content: "He is so good"},
       {author: 'HR', content: "He is so good"},

@@ -2,7 +2,6 @@
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <h1>Kanban</h1>
-    <router-link class="btn-primary h3" to="/">Go To Kanban</router-link>
     <!-- <router-link to="/detail">detail</router-link> -->
     <router-view />
     

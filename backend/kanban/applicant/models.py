@@ -25,7 +25,7 @@ class Applicant(models.Model):
     education = models.TextField()
     contact = models.IntegerField()
     status = models.CharField(max_length=200)
-    rate = models.IntegerField()
+    rate = models.FloatField()
     rate_number = models.IntegerField()
     comment = models.ArrayField(model_container=Comment, model_form_class=CommentForm)
 
