@@ -35,13 +35,25 @@
               <b-collapse id="collapse-1" class="mt-2">
                 <b-card>
                   <!-- Rate -->
-                  <FormulateForm class="row" v-model="tempRate" @submit="submitRate(element.contact)">
-                  <FormulateInput class="col" name="rate" placeholder="Enter your rate" validation="required" />
-                  <FormulateInput class="col" type="submit" name="rate" label="Rate" validation="required" />
+                  <!-- Add Comment -->
+                  <FormulateForm v-model="reviewForm" @submit="submitReview(element)">
+                    <FormulateInput
+                      name="rate"
+                      :options="{1: 1, 2: 2, 3: 3, 4: 4, 5:5}"
+                      type="select"
+                      placeholder="Your rating"
+                      label="How well is this applicant?"
+                    />
+                    <FormulateInput name="author" placeholder="Reviewer" validation="required" />
+                    <FormulateInput name="comment" placeholder="Enter your comment" validation="required" />
+
+                  <!-- <FormulateInput class="col" name="rate" placeholder="Enter your rate" validation="required" /> -->
+                  <FormulateInput type="submit" :disabled="element.reviewed" label="Submit" />
+                  <p v-show="element.reviewed">Submitted! Refresh the page to see updated result</p>
                   </FormulateForm>
                 </b-card>
                 <b-card>
-                  <p>Comment</p>
+                  <p>Comments</p>
                   <b-list-group>
                     <b-list-group-item class="d-flex align-items-center" v-for="comment in element.comments" v-bind:key="comment.author">
                       <b-avatar class="mr-3"></b-avatar>
@@ -49,12 +61,8 @@
                       <span class="mr-auto">{{comment.content}}</span>
                     </b-list-group-item>
                   </b-list-group>
-                   <!-- Add Comment -->
-                  <FormulateForm class="row" v-model="tempRate" @submit="card.submitRate(tempRate)">
-                    <FormulateInput class="col-2" name="rate" placeholder="Reviewer" validation="required" />
-                    <FormulateInput class="col" name="rate" placeholder="Enter your comment" validation="required" />
-                    <FormulateInput class="col" type="submit" name="rate" label="Comment" validation="required" />
-                  </FormulateForm>
+                   
+                  
                 </b-card>
               </b-collapse>
 
@@ -99,7 +107,8 @@ export default {
           'Accepted': [],
           'Rejected': []
       },
-      tempRate: 0
+      tempRate: 0,
+      reviewForm: null,
     }
   },
   mounted: function() {
@@ -136,18 +145,36 @@ export default {
       this.getAllApplicants();
     },
 
-    submitRate(contact) {
-      axios({
+    submitReview(card) {
+      console.log("fired " + this.reviewForm);
+        axios({
         url: BASE_URL + "add-rate",
         method: 'post',
         headers: { 
           'Accept': 'application/json',
           'Content-Type': 'application/json' },
         data: {
-          contact: contact,
-          newRate: this.tempRate
+          'contact': card.contact,
+          'newRate': this.reviewForm['rate']
         }
       });
+      
+      // submit comment
+      
+        axios({
+        url: BASE_URL + "add-comment",
+        method: 'post',
+        headers: { 
+          'Accept': 'application/json',
+          'Content-Type': 'application/json' },
+        data: {
+          'contact': card.contact,
+          'author': this.reviewForm['author'],
+          'content': this.reviewForm['comment']
+        }
+      });
+      card.reviewed = true;
+      
     },
 
     getAllApplicants() {
@@ -189,6 +216,7 @@ export class Card {
     this.contact = contact;
     this.status = "Applied";
     this.rate = 0;
+    this.reviewed = false;
     this.comments = [
       {author: 'Manager', content: "He is so good"},
       {author: 'HR', content: "He is so good"},

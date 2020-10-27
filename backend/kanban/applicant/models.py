@@ -27,7 +27,7 @@ class Applicant(models.Model):
     status = models.CharField(max_length=200)
     rate = models.FloatField()
     rate_number = models.IntegerField()
-    comment = models.ArrayField(model_container=Comment, model_form_class=CommentForm)
+    comment = models.ArrayField(model_container=Comment, model_form_class=CommentForm, default=list)
 
 
 
