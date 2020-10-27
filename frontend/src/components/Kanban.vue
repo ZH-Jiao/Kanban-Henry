@@ -181,6 +181,9 @@
 
 <script>
 import draggable from "vuedraggable"
+import axios from 'axios'
+
+const BASE_URL = "http://localhost:8000/"
 
 export default {
   name: 'Kanban',
@@ -226,7 +229,44 @@ export default {
         this.formValues['contact']
       );
       this.listBoard['Applied'].push(card);
-      console.log(this.listBoard['Applied'])
+      console.log(this.listBoard['Applied']);
+    //   const requestOptions = {
+		// 	method: 'POST',
+		// 	headers: { 
+		// 		'Accept': 'application/json',
+		// 		'Content-Type': 'application/json' 
+		// 	},
+		// 	body: JSON.stringify({
+		// 		'name': card.name,
+    //     'education': card.education,
+    //     'contact': card.contact,
+    //     'status': 'Applied',
+    //     'rate': 0,
+    //     'rate_number': 0
+		// 	})
+		// };
+    // fetch(BASE_URL + "add-applicant", requestOptions);
+    
+    // axios.get(BASE_URL + "get-all-applicants").then(response => {
+    //   console.log(response);
+    // })
+      axios({
+        url: BASE_URL + "add-applicant",
+        method: 'post',
+        headers: { 
+          'Accept': 'application/json',
+          'Content-Type': 'application/json' },
+        data: {
+          name: card.name,
+          education: card.education,
+          contact: card.contact,
+          status: 'Applied',
+          rate: 0,
+          rate_number: 0
+        }
+      });
+
+        
     },
     navToDetail(contact) {
       this.$router.push("/detail/" + contact);
@@ -244,10 +284,10 @@ export class Card {
     this.rateNumber = 0;
     this.curRate = 0;
     this.comments = [
-      {author: 'Manager', content: "He is so bad"},
-      {author: 'HR', content: "He is so bad"},
-      {author: 'Head HR', content: "He is so bad"},
-      {author: 'CTO', content: "He is so bad"},
+      {author: 'Manager', content: "He is so good"},
+      {author: 'HR', content: "He is so good"},
+      {author: 'Head HR', content: "He is so good"},
+      {author: 'CTO', content: "He is so good"},
     ]
   }
 
