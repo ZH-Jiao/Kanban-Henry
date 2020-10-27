@@ -9,21 +9,21 @@
         <FormulateInput type="submit" label="Add Applicant"/>
       </FormulateForm>
     
-
-
+    <br>
+    <b-button block pill v-b-toggle.collapse-1 variant="outline-primary" class="">Switch Between Abstract / Detail View</b-button>
     <div class="row mt-4">
-      <div class="col-4">
-        <div class="p-2 alert alert-secondary">
-          <h3>{{boardName[0]}}</h3>
+      <div class="col-4" v-for="bName in boardName" :key="bName">
+        <div class="p-2 alert alert-success">
+          <h3>{{bName}}</h3>
           <!-- Backlog draggable component. Pass arrBackLog to list prop -->
           <draggable
             class="list-group kanban-column"
-            :list="listBoard[boardName[0]]"
+            :list="listBoard[bName]"
             group="tasks"
           >
             <div
               class="list-group-item"
-              v-for="element in listBoard[boardName[0]]"
+              v-for="element in listBoard[bName]"
               :key="element.name"
             >
               <!-- {{ element.name }} -->
@@ -31,7 +31,7 @@
               <div v-html="element.renderCard()"></div>
 
               <!-- Collaps Detail -->
-              <b-button v-b-toggle.collapse-1 variant="primary">Expand Detail</b-button>
+              
               <b-collapse id="collapse-1" class="mt-2">
                 <b-card>
                   <!-- Rate -->
@@ -58,106 +58,6 @@
                 </b-card>
               </b-collapse>
 
-            </div>
-          </draggable>
-        </div>
-      </div>
-
-      <div class="col-4">
-        <div class="p-2 alert alert-primary">
-          <h3>{{boardName[1]}}</h3>
-          <!-- In Progress draggable component. Pass arrInProgress to list prop -->
-          <draggable
-            class="list-group kanban-column"
-            :list="listBoard[boardName[1]]"
-            group="tasks"
-          >
-            <div
-              class="list-group-item"
-              v-for="element in listBoard[boardName[1]]"
-              :key="element.name"
-            >
-              <div v-html="element.renderCard()"></div>
-            </div>
-          </draggable>
-        </div>
-      </div>
-
-      <div class="col-4">
-        <div class="p-2 alert alert-warning">
-          <h3>{{boardName[2]}}</h3>
-          <!-- Testing draggable component. Pass arrTested to list prop -->
-          <draggable
-            class="list-group kanban-column"
-            :list="listBoard[boardName[2]]"
-            group="tasks"
-          >
-            <div
-              class="list-group-item"
-              v-for="element in listBoard[boardName[2]]"
-              :key="element.name"
-            >
-              <div v-html="element.renderCard()"></div>
-            </div>
-          </draggable>
-        </div>
-      </div>
-
-      <div class="col-4">
-        <div class="p-2 alert alert-success">
-          <h3>{{boardName[3]}}</h3>
-          <!-- Done draggable component. Pass arrDone to list prop -->
-          <draggable
-            class="list-group kanban-column"
-            :list="listBoard[boardName[3]]"
-            group="tasks"
-          >
-            <div
-              class="list-group-item"
-              v-for="element in listBoard[boardName[3]]"
-              :key="element.name"
-            >
-              <div v-html="element.renderCard()"></div>
-            </div>
-          </draggable>
-        </div>
-      </div>
-
-       <div class="col-4">
-        <div class="p-2 alert alert-success">
-          <h3>{{boardName[4]}}</h3>
-          <!-- Done draggable component. Pass arrDone to list prop -->
-          <draggable
-            class="list-group kanban-column"
-            :list="listBoard[boardName[4]]"
-            group="tasks"
-          >
-            <div
-              class="list-group-item"
-              v-for="element in listBoard[boardName[4]]"
-              :key="element.name"
-            >
-              <div v-html="element.renderCard()"></div>
-            </div>
-          </draggable>
-        </div>
-      </div>
-
-       <div class="col-4">
-        <div class="p-2 alert alert-success">
-          <h3>{{boardName[5]}}</h3>
-          <!-- Done draggable component. Pass arrDone to list prop -->
-          <draggable
-            class="list-group kanban-column"
-            :list="listBoard[boardName[5]]"
-            group="tasks"
-          >
-            <div
-              class="list-group-item"
-              v-for="element in listBoard[boardName[5]]"
-              :key="element.name"
-            >
-              <div v-html="element.renderCard()"></div>
             </div>
           </draggable>
         </div>
