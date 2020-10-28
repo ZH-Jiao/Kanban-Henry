@@ -12,6 +12,7 @@ def get_all_applicants(request):
     return_list = []
     for e in entrys:
         entry = {
+            'id': e.id,
             'name': e.name,
             'education': e.education,
             'contact': e.contact,

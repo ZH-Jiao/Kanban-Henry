@@ -5,8 +5,9 @@
       <FormulateForm v-model="formValues" @submit="handleSubmit">
         <FormulateInput name="name" label="Name" validation="required" />
         <FormulateInput name="education" label="Education" validation="required" />
-        <FormulateInput name="contact" label="Contact" validation="required|number" />
-        <FormulateInput type="submit" label="Add Applicant"/>
+        <FormulateInput @blur="checkApplicant" name="contact" label="Contact" validation="required|number" />
+        <FormulateInput :disabled="applicantRegistered" type="submit" label="Add Applicant"/>
+        <p v-show="applicantRegistered">'Adding failed. This contact number is already registered'</p>
       </FormulateForm>
     
     <br>
@@ -33,7 +34,6 @@
               <div v-html="element.renderCard()"></div>
 
               <!-- Collaps Detail -->
-              
               <b-collapse id="collapse-1" class="mt-2">
                 <b-card>
                   <!-- Rate -->
@@ -112,6 +112,8 @@ export default {
       },
       tempRate: 0,
       reviewForm: null,
+      collapseID: 1,
+      applicantRegistered: false
     }
   },
   mounted: function() {
@@ -122,29 +124,37 @@ export default {
   methods: {
     handleSubmit() {
       console.log(this.formValues);
-      var card = new Card(
-        this.formValues['name'],
-        this.formValues['education'],
-        this.formValues['contact']
-      );
-      this.listBoard['Applied'].push(card);
-      console.log(this.listBoard['Applied']);
+      var contact = this.formValues['contact'];
+      this.checkApplicant(contact);
+      console.log(this.applicantRegistered);
+      if (this.applicantRegistered) {
+        // no adding
+      } else {
 
-      axios({
-        url: BASE_URL + "add-applicant",
-        method: 'post',
-        headers: { 
-          'Accept': 'application/json',
-          'Content-Type': 'application/json' },
-        data: {
-          name: card.name,
-          education: card.education,
-          contact: card.contact,
-          status: 'Applied',
-          rate: 0,
-          rate_number: 0
-        }
-      });
+        var card = new Card(
+          this.formValues['name'],
+          this.formValues['education'],
+          this.formValues['contact']
+        );
+        this.listBoard['Applied'].push(card);
+        console.log(this.listBoard['Applied']);
+
+        axios({
+          url: BASE_URL + "add-applicant",
+          method: 'post',
+          headers: { 
+            'Accept': 'application/json',
+            'Content-Type': 'application/json' },
+          data: {
+            name: card.name,
+            education: card.education,
+            contact: card.contact,
+            status: 'Applied',
+            rate: 0,
+            rate_number: 0
+          }
+        });
+      }
       
     },
 
@@ -180,6 +190,26 @@ export default {
       
     },
 
+    checkApplicant() {
+      var contact = this.formValues['contact'];
+      axios({
+        url: BASE_URL + "get-applicant",
+        params: {contact: contact},
+        method: 'get',
+        headers: { 
+          'Accept': 'application/json',
+          'Content-Type': 'application/json' },
+      })
+      .then(response => {
+        console.log('check applicant: ' + response.data)
+        if (response.data == '1') {
+          this.applicantRegistered = true;
+        } else {
+          this.applicantRegistered = false;
+        }
+      });
+    },
+
     getAllApplicants() {
       // this.refreshList();
       var entry = null;
@@ -196,6 +226,7 @@ export default {
           var card = new Card(entry.name, entry.education, entry.contact);
           card.rate = entry.rate;
           card.comments = entry.comment;
+          card.id = entry.id;
           this.listBoard[entry.status].push(card)
         }
       })
@@ -231,9 +262,12 @@ export default {
         }
         
       }
+    },
+
+    incrementCollapseID() {
+      this.collapseID++;
+      return 'collapse-' + this.collapseID.toString();
     }
-
-
 
   },
 
@@ -241,6 +275,7 @@ export default {
 
 export class Card {
   constructor(name, education, contact) {
+    this.id = 0;
     this.name = name;
     this.education = education;
     this.contact = contact;
