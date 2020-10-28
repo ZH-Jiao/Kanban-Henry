@@ -1,19 +1,19 @@
-# Kanban project
+# Kanban Project - Hiring Process
 
 By Zhiheng Jiao
 
 A full-stack kanban project from scratch for hiring process. Completed in two days. Learned Vue.js on the fly.
 
-Demo link: http://3.83.234.159:8080/
+Demo on AWS EC2: http://3.83.234.159:8080/
 
-## Key features
+## Key Features
 
 - Six board with draggable applicant cards
 - Add new cards with basic information and duplication checking
 - Drag card across boards to change applicant's status
 - Rate applicants from 1 to 5 star. Display the average score
 - Write comment to each card and display
-- Expand/collapse detail information of cards
+- Expand/collapse detail information of cards by click the button
 
 ## Libraries
 | Frontend                | Backend           |
@@ -25,13 +25,7 @@ Demo link: http://3.83.234.159:8080/
 | API call: axios         |                   |
 | Host: nginx             |                   |
 
-## Deployment
 
-Deployed with docker. Since the local environment of my laptop has undefined bug with docker-compose, most of the deployment is done with Dockerfile or Manually.
-
-The dev deployment is on AWS EC2.
-
-Demo link: http://3.83.234.159:8080/
 
 ## RESTful API
 
@@ -45,6 +39,8 @@ Demo link: http://3.83.234.159:8080/
 | localhost:8000/update-applicant-status | POST   | Update the status of the applicant                           |
 
 Support CORS
+
+
 
 ## Database Schema
 
@@ -74,46 +70,42 @@ Support CORS
 
 
 
+## Deployment
+
+Deployed with docker. Since the local environment of my laptop has undefined bug with docker-compose, most of the deployment is done with Dockerfile or Manually.
+
+The dev deployment is on AWS EC2.
+
+Demo link: http://3.83.234.159:8080/
+
+
+
 ## Development Log
 
-
-
-
-
 ```
-git clone https://github.com/ZH-Jiao/Kanban-Henry.git
-cd Kanban-Henry/
-
-```
-
-docker
-
-```
-docker pull mongo:latest
-docker images
-docker run -itd --name mongo -p 27017:27017 mongo
-docker exec -it mongo mongo admin
-> db.createUser({ user:'admin',pwd:'123456',roles:[ { role:'userAdminAnyDatabase', db: 'admin'},"readWriteAnyDatabase"]});
-> db.auth('admin', '123456')
-```
-
-
-
-mongodb
-
-```
-wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
-echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
-sudo apt-get update
-sudo apt-get install -y mongodb-org
-sudo systemctl start mongod
-sudo systemctl status mongod
+* 6dba512 - (HEAD -> master, origin/master) Finished the project (17 seconds ago) <Zhiheng Jiao>
+* cdb7f1d - Add frontend .sh (9 hours ago) <Zhiheng Jiao>
+* ec5d687 - Deployment on AWS (9 hours ago) <Zhiheng Jiao>
+* 588dfc9 - Update (9 hours ago) <Zhiheng Jiao>
+* dff68be - Adding deployment configuration (10 hours ago) <Zhiheng Jiao>
+* c3594cd - Adding deployment config (10 hours ago) <Zhiheng Jiao>
+* bb10804 - Removed redundent frontend component (12 hours ago) <Zhiheng Jiao>
+* 1cebe2f - Finished applicant adding duplication checking feature. Applicants with same contact cannot be added (12 hours ago) <Zhiheng Jiao>
+* 0d5c8e0 - Finished Comment display and synchonize of frontend and backend (14 hours ago) <Zhiheng Jiao>
+* 87908d1 - Finished applicants dragging status synchorizing with the Applicant database (14 hours ago) <Zhiheng Jiao>
+* 83810a4 - Finished rating and comment submission in backend and frontend. Solved conflictions (22 hours ago) <Zhiheng Jiao>
+* 1ee7b43 - Modified detail / abstract view switch for better experience (34 hours ago) <Zhiheng Jiao>
+* bf0f9a8 - Mounted page elements to Database. Auto refresh changes (34 hours ago) <Zhiheng Jiao>
+* 65ce6ce - Solved CORS issue (35 hours ago) <Zhiheng Jiao>
+* a625aca - Updated readme (2 days ago) <Zhiheng Jiao>
+* 5fd54b8 - Initiate backend. Modify file structure (2 days ago) <Zhiheng Jiao>
+* 64e2e85 - Finished collasp card (2 days ago) <Zhiheng Jiao>
+* 5f70ac4 - Added formulate for rich information creation (2 days ago) <Zhiheng Jiao>
+* 3b352fd - Initialize VueFormulate (2 days ago) <Zhiheng Jiao>
+* b7c7280 - Added ADD feature (2 days ago) <Zhiheng Jiao>
+* 8b61df2 - Create basic draggable kanban view (2 days ago) <Zhiheng Jiao>
+* 624e700 - init (2 days ago) <Zhiheng Jiao>
 ```
 
-python
 
-```
-sudo apt install python3.8
-sudo apt install python3-pip
-```
 
