@@ -78,6 +78,30 @@ The dev deployment is on AWS EC2.
 
 Demo link: http://3.83.234.159:8080/
 
+### Deployment for local test
+
+Requirement:
+
+- mongoDB running on localhost:27017
+- npm
+- Python 3.6 or above and Pip 
+
+Frontend
+
+```
+cd ./frontend
+npm install
+npm run serve
+```
+
+Backend
+
+```
+cd ./backend/kanban
+pip install -r requirements.txt
+python manage.py runserver
+```
+
 
 
 ## Development Log
