@@ -23,6 +23,16 @@ def get_all_applicants(request):
     return Response(return_list)
 
 
+@api_view(['GET'])
+def get_applicant(request):
+    contact = request.query_params['contact']
+    entrys = Applicant.objects.filter(contact=contact)
+    res = 0
+    if len(entrys) > 0:
+        res = 1
+    return Response(res)
+
+
 @api_view(['POST'])
 def add_applicant(request):
     res = request.data
@@ -72,3 +82,19 @@ def add_comment(request):
 
     entry.save()
     return Response()
+
+
+
+@api_view(['POST'])
+def update_applicant_status(request):
+    res = request.data
+    print(f'comment: {res}')
+    contact = res['contact']
+    status = res['status']
+
+    entry = Applicant.objects.filter(contact=contact)[0]
+    entry.status = res['status']
+
+    entry.save()
+    return Response()
+

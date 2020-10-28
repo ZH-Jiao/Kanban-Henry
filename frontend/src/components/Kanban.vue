@@ -20,12 +20,14 @@
             class="list-group kanban-column"
             :list="listBoard[bName]"
             group="tasks"
+            @end="updateStatus"
           >
             <div
               class="list-group-item"
               v-for="element in listBoard[bName]"
               :key="element.name"
             >
+              <div>
               <!-- {{ element.name }} -->
               <!-- Basic Info -->
               <div v-html="element.renderCard()"></div>
@@ -65,6 +67,7 @@
                   
                 </b-card>
               </b-collapse>
+              </div>
 
             </div>
           </draggable>
@@ -142,7 +145,7 @@ export default {
           rate_number: 0
         }
       });
-      this.getAllApplicants();
+      
     },
 
     submitReview(card) {
@@ -201,6 +204,31 @@ export default {
       for (n of this.boardName) {
         this.listBoard[n] = []
       }
+    },
+
+    updateStatus() {
+      console.log("updating status");
+      for (var i = 0; i < this.boardName.length; i++) {
+        var cur_board = this.boardName[i];
+        var board = this.listBoard[cur_board];
+        for (var j = 0; j < board.length; j++) {
+          if (board[j].status !== cur_board) {
+            // update the status
+            axios({
+              url: BASE_URL + "update-applicant-status",
+              method: 'post',
+              headers: { 
+                'Accept': 'application/json',
+                'Content-Type': 'application/json' },
+              data: {
+                'contact': board[j].contact,
+                'status': cur_board
+              }
+            });
+          }
+        }
+        
+      }
     }
 
 
@@ -218,10 +246,7 @@ export class Card {
     this.rate = 0;
     this.reviewed = false;
     this.comments = [
-      {author: 'Manager', content: "He is so good"},
-      {author: 'HR', content: "He is so good"},
-      {author: 'Head HR', content: "He is so good"},
-      {author: 'CTO', content: "He is so good"},
+      
     ]
   }
 
