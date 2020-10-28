@@ -10,7 +10,6 @@ import './assets/formulate.css'
 import VueFormulate from '@braid/vue-formulate'
 
 import Kanban from "./components/Kanban"
-import Detail from "./components/Detail"
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
@@ -31,8 +30,6 @@ Vue.config.productionTip = false
 // We'll talk about nested routes later.
 const routes = [
     { path: '/', component: Kanban },
-    { path: '/detail', component: Detail },
-    { path: '/detail/:contact', component: Detail },
 ]
 
 // 3. Create the router instance and pass the `routes` option
