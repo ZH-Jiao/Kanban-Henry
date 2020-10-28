@@ -17,3 +17,13 @@ Framework: Django
 Database: mongoDB
 ORM: Djongo
 
+
+
+## Deployment
+
+```
+git clone https://github.com/ZH-Jiao/Kanban-Henry.git
+cd Kanban-Henry/
+
+```
+
