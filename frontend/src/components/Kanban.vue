@@ -59,8 +59,8 @@
                   <b-list-group>
                     <b-list-group-item class="d-flex align-items-center" v-for="comment in element.comments" v-bind:key="comment.author">
                       <b-avatar class="mr-3"></b-avatar>
-                      <span class="mr-auto">{{comment.author}}</span>
-                      <span class="mr-auto">{{comment.content}}</span>
+                      <span class="mr-auto">{{comment['author']}}</span>
+                      <span class="mr-auto">{{comment['content']}}</span>
                     </b-list-group-item>
                   </b-list-group>
                    
@@ -191,9 +191,11 @@ export default {
           'Content-Type': 'application/json' },
       })
       .then(response => {
+        console.log(response.data[0]);
         for (entry of response.data) {
           var card = new Card(entry.name, entry.education, entry.contact);
           card.rate = entry.rate;
+          card.comments = entry.comment;
           this.listBoard[entry.status].push(card)
         }
       })

@@ -17,7 +17,8 @@ def get_all_applicants(request):
             'contact': e.contact,
             'status': e.status,
             'rate': e.rate,
-            'rate_number': e.rate_number
+            'rate_number': e.rate_number,
+            'comment': e.comment
         }
         return_list.append(entry)
     return Response(return_list)
